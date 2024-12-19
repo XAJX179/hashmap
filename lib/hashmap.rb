@@ -106,4 +106,40 @@ class HashMap
     @buckets = Array.new(@capacity)
     'Buckets cleared'
   end
+
+  def keys
+    keys = []
+    @buckets.each do |elem|
+      next if elem.nil?
+
+      elem.each do |node|
+        keys << node.key
+      end
+    end
+    keys
+  end
+
+  def values
+    values = []
+    @buckets.each do |elem|
+      next if elem.nil?
+
+      elem.each do |node|
+        values << node.value
+      end
+    end
+    values
+  end
+
+  def entries
+    entries = []
+    @buckets.each do |elem|
+      next if elem.nil?
+
+      elem.each do |node|
+        entries << [node.key, node.value]
+      end
+    end
+    entries
+  end
 end
