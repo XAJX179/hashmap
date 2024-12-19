@@ -59,4 +59,14 @@ class HashMap
   def check_index(index)
     raise IndexError if index.negative? || index >= @buckets.length
   end
+
+  def get(key)
+    index = hash(key) % @capacity
+    linked_list = @buckets[index]
+
+    return nil if linked_list.nil?
+
+    key_index = linked_list.find_key_index(key)
+    linked_list.at(key_index).value
+  end
 end
