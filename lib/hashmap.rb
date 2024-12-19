@@ -20,4 +20,43 @@ class HashMap
 
     hash_code
   end
+
+  def to_s
+    string = String.new
+    string << "Hashmap : \n"
+    @buckets.each_with_index do |elem, index|
+      string << "#{index} :" << elem.to_s << "\n"
+    end
+    string << "capacity : #{@capacity}\nload_factor : #{@load_factor}"
+  end
+
+  # set's a key and it's value in a bucket, if the key already exists updates the value
+  def set(key, value) # rubocop:disable Metrics/MethodLength
+    # pp "key : #{key}"
+    # pp "value : #{value}"
+    index = hash(key) % @capacity
+    # pp "index : #{index}"
+    check_index(index)
+    # pp "bucket : #{@buckets[index]}"
+
+    if @buckets[index].nil?
+      linked_list = LinkedList.new
+      linked_list.append(key, value)
+      # pp linked_list
+      @buckets[index] = linked_list
+    elsif (key_index = @buckets[index].find_key_index(key))
+      # pp @buckets[index]
+      # pp "key_index : #{key_index}"
+      @buckets[index].at(key_index).value = value
+    else
+      # pp "bucket : #{@buckets[index]}"
+      @buckets[index].append(key, value)
+    end
+    # pp "bucket : #{@buckets[index]}"
+  end
+
+  # checks if index is in range 0<= index < @capacity
+  def check_index(index)
+    raise IndexError if index.negative? || index >= @buckets.length
+  end
 end
