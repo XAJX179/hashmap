@@ -57,6 +57,16 @@ test.set('lion', 'golden')
 
 puts test
 
+pp "length : #{test.length}"
+
 test.set('jacket', 'red')
 
 puts test
+
+pp "length : #{test.length}"
+
+test.set('moon', 'silver')
+
+puts test
+
+pp "length : #{test.length}"

@@ -5,9 +5,11 @@
 #   1. load_factor - determine when it is a good time to grow our buckets
 #   2. capacity - total number of buckets we currently have.
 class HashMap
-  def initialize
-    @capacity = 16
-    @load_factor = 0.75
+  attr_reader :buckets
+
+  def initialize(capacity = 16, load_factor = 0.75)
+    @capacity = capacity
+    @load_factor = load_factor
     @buckets = Array.new(@capacity)
   end
 
@@ -25,35 +27,47 @@ class HashMap
   def to_s
     string = String.new
     string << "Hashmap : \n"
-    @buckets.each_with_index do |elem, index|
-      string << "#{index} :" << elem.to_s << "\n"
-    end
+    @buckets.each_with_index { |elem, index| string << "#{index} : #{elem} \n" }
     string << "capacity : #{@capacity}\nload_factor : #{@load_factor}"
   end
 
   # set's a key and it's value in a bucket, if the key already exists updates the value
-  def set(key, value) # rubocop:disable Metrics/MethodLength
-    # pp "key : #{key}"
-    # pp "value : #{value}"
+  def set(key, value)
     index = hash(key) % @capacity
-    # pp "index : #{index}"
     check_index(index)
-    # pp "bucket : #{@buckets[index]}"
 
     if @buckets[index].nil?
-      linked_list = LinkedList.new
-      linked_list.append(key, value)
-      # pp linked_list
-      @buckets[index] = linked_list
+
+      new_list(key, value, index)
+
     elsif (key_index = @buckets[index].find_key_index(key))
-      # pp @buckets[index]
-      # pp "key_index : #{key_index}"
+
       @buckets[index].at(key_index).value = value
+
     else
-      # pp "bucket : #{@buckets[index]}"
       @buckets[index].append(key, value)
     end
-    # pp "bucket : #{@buckets[index]}"
+    grow if high_load?
+  end
+
+  # when nil is found in bucket this creates new list for set method
+  def new_list(key, value, index)
+    linked_list = LinkedList.new
+    linked_list.append(key, value)
+    @buckets[index] = linked_list
+  end
+
+  # check if length exceeds the load level
+  def high_load?
+    length > @capacity * @load_factor
+  end
+
+  # grow buckets
+  def grow
+    @capacity *= 2
+    hm = HashMap.new(@capacity)
+    entries.each { |key, value| hm.set(key, value) }
+    @buckets = hm.buckets
   end
 
   # checks if index is in range 0<= index < @capacity
@@ -112,9 +126,7 @@ class HashMap
     @buckets.each do |elem|
       next if elem.nil?
 
-      elem.each do |node|
-        keys << node.key
-      end
+      elem.each { |node| keys << node.key }
     end
     keys
   end
@@ -124,9 +136,7 @@ class HashMap
     @buckets.each do |elem|
       next if elem.nil?
 
-      elem.each do |node|
-        values << node.value
-      end
+      elem.each { |node| values << node.value }
     end
     values
   end
@@ -136,9 +146,7 @@ class HashMap
     @buckets.each do |elem|
       next if elem.nil?
 
-      elem.each do |node|
-        entries << [node.key, node.value]
-      end
+      elem.each { |node| entries << [node.key, node.value] }
     end
     entries
   end
