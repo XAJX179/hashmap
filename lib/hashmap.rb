@@ -92,11 +92,18 @@ class HashMap
     node.value
   end
 
+  # returns the number of keys present.
   def length
     length = 0
     @buckets.each do |elem|
       length += elem.size unless elem.nil?
     end
     length
+  end
+
+  def clear
+    @capacity = 16
+    @buckets = Array.new(@capacity)
+    'Buckets cleared'
   end
 end

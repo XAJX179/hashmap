@@ -25,3 +25,8 @@ pp "remove : #{hm.remove('sr')}"
 puts hm
 
 pp "length : #{hm.length}"
+
+pp 'clear :'
+pp hm.clear
+
+puts hm
