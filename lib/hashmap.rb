@@ -21,6 +21,7 @@ class HashMap
     hash_code
   end
 
+  # prints the hashmap in a more readable format
   def to_s
     string = String.new
     string << "Hashmap : \n"
@@ -60,6 +61,7 @@ class HashMap
     raise IndexError if index.negative? || index >= @buckets.length
   end
 
+  # get value of a key
   def get(key)
     index = hash(key) % @capacity
     linked_list = @buckets[index]
@@ -68,5 +70,25 @@ class HashMap
 
     key_index = linked_list.find_key_index(key)
     linked_list.at(key_index).value
+  end
+
+  # returns true if hashmap contains the key else false
+  def has?(key)
+    index = hash(key) % @capacity
+    return false if @buckets[index].nil?
+
+    @buckets[index].contains_key?(key)
+  end
+
+  # removes the key returns the value of the deleted key ,returns nil if not found.
+  def remove(key)
+    return nil unless has?(key)
+
+    index = hash(key) % @capacity
+    linked_list = @buckets[index]
+    key_index = linked_list.find_key_index(key)
+    node = linked_list.at(key_index)
+    linked_list.remove_at(key_index)
+    node.value
   end
 end
