@@ -91,4 +91,12 @@ class HashMap
     linked_list.remove_at(key_index)
     node.value
   end
+
+  def length
+    length = 0
+    @buckets.each do |elem|
+      length += elem.size unless elem.nil?
+    end
+    length
+  end
 end

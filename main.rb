@@ -9,6 +9,8 @@ hm.set('sj', 'shrek_jack')
 hm.set('sj', 'waawaaweewa')
 hm.set('cz', 'wassup?')
 puts hm
+pp "length : #{hm.length}"
+
 pp "get : #{hm.get('cz')}"
 pp "get : #{hm.get('sj')}"
 pp "get : #{hm.get('sr')}"
@@ -21,3 +23,5 @@ pp hm.remove('sj')
 pp "remove : #{hm.remove('sr')}"
 
 puts hm
+
+pp "length : #{hm.length}"
