@@ -4,7 +4,7 @@
 #   @instance_variables -
 #   1. load_factor - determine when it is a good time to grow our buckets
 #   2. capacity - total number of buckets we currently have.
-class HashMap
+class HashMap # rubocop:disable Metrics/ClassLength
   attr_reader :buckets
 
   def initialize(capacity = 16, load_factor = 0.75)
@@ -41,7 +41,7 @@ class HashMap
       new_list(key, value, index)
 
     elsif (key_index = @buckets[index].find_key_index(key))
-
+      # updates value
       @buckets[index].at(key_index).value = value
 
     else
