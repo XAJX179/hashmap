@@ -1,5 +1,7 @@
 # Hashmap
 
+<img src="./hashmap.png">
+
 A hashmap is a data structure which takes in a key value pair, produces a hash code from key, determines index based on capacity, and stores the pair in the bucket at the index, and it grows based on the load_factor to avoid collisions and uses linked_list to store multiple values in same buckets when necessary.
 
 ## Buckets
